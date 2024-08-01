@@ -40,8 +40,7 @@ public class UserDAO {
                         rs.getString("username"),
                         rs.getString("password"),
                         rs.getString("email"),
-                        rs.getString("role")
-                );
+                        rs.getString("role"));
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -60,12 +59,23 @@ public class UserDAO {
                         rs.getString("username"),
                         rs.getString("password"),
                         rs.getString("email"),
-                        rs.getString("role")
-                ));
+                        rs.getString("role")));
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
         return users;
+    }
+
+    public boolean deleteUser(int userId) {
+        String query = "DELETE FROM Users WHERE id = ?";
+        try (PreparedStatement stmt = connection.prepareStatement(query)) {
+            stmt.setInt(1, userId);
+            int affectedRows = stmt.executeUpdate();
+            return affectedRows > 0;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
     }
 }
