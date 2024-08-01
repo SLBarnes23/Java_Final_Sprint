@@ -82,6 +82,23 @@ public class Main {
 
     private static void showBuyerMenu(Scanner scanner, Buyer buyer) {
         // Implement buyer-specific menu and actions
+        System.out.println("Buyer menu:");
+        // Example options
+        System.out.println("1. View Products");
+        System.out.println("2. Logout");
+        System.out.print("Choose an option: ");
+        int choice = scanner.nextInt();
+        scanner.nextLine(); // Consume newline
+
+        switch (choice) {
+            case 1:
+                viewProducts();
+                break;
+            case 2:
+                return; // Logout and return to main menu
+            default:
+                System.out.println("Invalid choice. Please try again.");
+        }
     }
 
     private static void showSellerMenu(Scanner scanner, Seller seller) {
@@ -109,7 +126,7 @@ public class Main {
                     viewMyProducts(seller);
                     break;
                 case 5:
-                    return;
+                    return; // Logout and return to main menu
                 default:
                     System.out.println("Invalid choice. Please try again.");
             }
@@ -198,7 +215,7 @@ public class Main {
                     viewAllProducts();
                     break;
                 case 4:
-                    return;
+                    return; // Logout and return to main menu
                 default:
                     System.out.println("Invalid choice. Please try again.");
             }
@@ -231,6 +248,19 @@ public class Main {
 
     private static void viewAllProducts() {
         List<Product> products = productService.getAllProducts();
+        if (products.isEmpty()) {
+            System.out.println("No products found.");
+        } else {
+            for (Product product : products) {
+                System.out.println(product.getId() + ": " + product.getName() + " - $" + product.getPrice() + " - "
+                        + product.getQuantity() + " units - Seller ID: " + product.getSellerId());
+            }
+        }
+    }
+
+    private static void viewProducts() {
+        // Implement buyer-specific view products functionality
+        List<Product> products = productService.getAllProducts(); // Assuming buyers can view all products
         if (products.isEmpty()) {
             System.out.println("No products found.");
         } else {
