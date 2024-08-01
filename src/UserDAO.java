@@ -35,12 +35,21 @@ public class UserDAO {
             stmt.setString(2, password);
             ResultSet rs = stmt.executeQuery();
             if (rs.next()) {
-                return new User(
-                        rs.getInt("id"),
-                        rs.getString("username"),
-                        rs.getString("password"),
-                        rs.getString("email"),
-                        rs.getString("role"));
+                int id = rs.getInt("id");
+                String email = rs.getString("email");
+                String role = rs.getString("role");
+
+                // Create the correct type of User based on the role
+                switch (role) {
+                    case "buyer":
+                        return new Buyer(id, username, password, email, role);
+                    case "seller":
+                        return new Seller(id, username, password, email, role);
+                    case "admin":
+                        return new Admin(id, username, password, email, role);
+                    default:
+                        return new User(id, username, password, email, role);
+                }
             }
         } catch (SQLException e) {
             e.printStackTrace();
