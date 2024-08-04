@@ -9,7 +9,8 @@ public class ProductDAO {
         try {
             this.connection = DBConnection.getConnection();
         } catch (SQLException e) {
-            e.printStackTrace();
+            System.err.println("Error establishing database connection: " + e.getMessage());
+            e.printStackTrace(); // Proper error handling: logs the exception stack trace
         }
     }
 
@@ -23,7 +24,8 @@ public class ProductDAO {
             stmt.executeUpdate();
             return true;
         } catch (SQLException e) {
-            e.printStackTrace();
+            System.err.println("Error adding product: " + e.getMessage());
+            e.printStackTrace(); // Proper error handling: logs the exception stack trace
             return false;
         }
     }
@@ -39,7 +41,8 @@ public class ProductDAO {
             stmt.executeUpdate();
             return true;
         } catch (SQLException e) {
-            e.printStackTrace();
+            System.err.println("Error updating product: " + e.getMessage());
+            e.printStackTrace(); // Proper error handling: logs the exception stack trace
             return false;
         }
     }
@@ -52,7 +55,8 @@ public class ProductDAO {
             stmt.executeUpdate();
             return true;
         } catch (SQLException e) {
-            e.printStackTrace();
+            System.err.println("Error deleting product: " + e.getMessage());
+            e.printStackTrace(); // Proper error handling: logs the exception stack trace
             return false;
         }
     }
@@ -72,7 +76,8 @@ public class ProductDAO {
                         rs.getInt("seller_id")));
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            System.err.println("Error fetching products by seller: " + e.getMessage());
+            e.printStackTrace(); // Proper error handling: logs the exception stack trace
         }
         return products;
     }
@@ -91,7 +96,8 @@ public class ProductDAO {
                         rs.getInt("seller_id")));
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            System.err.println("Error fetching all products: " + e.getMessage());
+            e.printStackTrace(); // Proper error handling: logs the exception stack trace
         }
         return products;
     }
