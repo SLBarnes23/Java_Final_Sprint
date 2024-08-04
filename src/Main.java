@@ -32,20 +32,38 @@ public class Main {
     }
 
     private static void register(Scanner scanner) {
-        System.out.print("Enter username: ");
-        String username = scanner.nextLine();
-        System.out.print("Enter password: ");
-        String password = scanner.nextLine();
-        System.out.print("Enter email: ");
-        String email = scanner.nextLine();
-        System.out.print("Enter role (buyer/seller/admin): ");
-        String role = scanner.nextLine();
+        try {
+            System.out.print("Enter username: ");
+            String username = scanner.nextLine();
+            System.out.print("Enter password: ");
+            String password = scanner.nextLine();
+            System.out.print("Enter email: ");
+            String email = scanner.nextLine();
+            System.out.print("Enter role (buyer/seller/admin): ");
+            String roleInput = scanner.nextLine().trim().toLowerCase();
 
-        User user = new User(0, username, password, email, role);
-        if (userService.registerUser(user)) {
-            System.out.println("Registration successful!");
-        } else {
-            System.out.println("Registration failed.");
+            String role;
+            switch (roleInput) {
+                case "buyer":
+                case "seller":
+                case "admin":
+                    role = roleInput;
+                    break;
+                default:
+                    System.out.println("Invalid role. Please enter 'buyer', 'seller', or 'admin'.");
+                    return;
+            }
+
+            // Use the static factory method to create a user with a hashed password
+            User user = User.createUser(0, username, password, email, role);
+            if (userService.registerUser(user)) {
+                System.out.println("Registration successful!");
+            } else {
+                System.out.println("Registration failed.");
+            }
+        } catch (Exception e) {
+            System.err.println("Error during registration: " + e.getMessage());
+            e.printStackTrace();
         }
     }
 
@@ -60,20 +78,32 @@ public class Main {
             System.out.println("Login successful! Welcome, " + user.getUsername());
             navigateRoleMenu(scanner, user);
         } else {
-            System.out.println("Login failed.");
+            System.out.println("Login failed. Please check your username and/or password.");
         }
     }
 
     private static void navigateRoleMenu(Scanner scanner, User user) {
         switch (user.getRole()) {
             case "buyer":
-                showBuyerMenu(scanner, (Buyer) user);
+                if (user instanceof Buyer) {
+                    showBuyerMenu(scanner, (Buyer) user);
+                } else {
+                    System.out.println("User is not a buyer.");
+                }
                 break;
             case "seller":
-                showSellerMenu(scanner, (Seller) user);
+                if (user instanceof Seller) {
+                    showSellerMenu(scanner, (Seller) user);
+                } else {
+                    System.out.println("User is not a seller.");
+                }
                 break;
             case "admin":
-                showAdminMenu(scanner, (Admin) user);
+                if (user instanceof Admin) {
+                    showAdminMenu(scanner, (Admin) user);
+                } else {
+                    System.out.println("User is not an admin.");
+                }
                 break;
             default:
                 System.out.println("Unknown role.");
@@ -81,28 +111,33 @@ public class Main {
     }
 
     private static void showBuyerMenu(Scanner scanner, Buyer buyer) {
-        // Implement buyer-specific menu and actions
-        System.out.println("Buyer menu:");
-        // Example options
-        System.out.println("1. View Products");
-        System.out.println("2. Logout");
-        System.out.print("Choose an option: ");
-        int choice = scanner.nextInt();
-        scanner.nextLine(); // Consume newline
+        while (true) {
+            System.out.println("Buyer menu:");
+            System.out.println("1. View All Products");
+            System.out.println("2. Search Products by Name");
+            System.out.println("3. Logout");
+            System.out.print("Choose an option: ");
+            int choice = scanner.nextInt();
+            scanner.nextLine(); // Consume newline
 
-        switch (choice) {
-            case 1:
-                viewProducts();
-                break;
-            case 2:
-                return; // Logout and return to main menu
-            default:
-                System.out.println("Invalid choice. Please try again.");
+            switch (choice) {
+                case 1:
+                    viewProducts();
+                    break;
+                case 2:
+                    searchProductsByName(scanner);
+                    break;
+                case 3:
+                    return; // Logout and return to main menu
+                default:
+                    System.out.println("Invalid choice. Please try again.");
+            }
         }
     }
 
     private static void showSellerMenu(Scanner scanner, Seller seller) {
         while (true) {
+            System.out.println("Seller menu:");
             System.out.println("1. Add Product");
             System.out.println("2. Update Product");
             System.out.println("3. Delete Product");
@@ -196,6 +231,7 @@ public class Main {
 
     private static void showAdminMenu(Scanner scanner, Admin admin) {
         while (true) {
+            System.out.println("Admin menu:");
             System.out.println("1. View All Users");
             System.out.println("2. Delete User");
             System.out.println("3. View All Products");
@@ -263,6 +299,20 @@ public class Main {
         List<Product> products = productService.getAllProducts(); // Assuming buyers can view all products
         if (products.isEmpty()) {
             System.out.println("No products found.");
+        } else {
+            for (Product product : products) {
+                System.out.println(product.getId() + ": " + product.getName() + " - $" + product.getPrice() + " - "
+                        + product.getQuantity() + " units - Seller ID: " + product.getSellerId());
+            }
+        }
+    }
+
+    private static void searchProductsByName(Scanner scanner) {
+        System.out.print("Enter product name to search: ");
+        String name = scanner.nextLine();
+        List<Product> products = productService.searchProductsByName(name);
+        if (products.isEmpty()) {
+            System.out.println("No products found with the name \"" + name + "\".");
         } else {
             for (Product product : products) {
                 System.out.println(product.getId() + ": " + product.getName() + " - $" + product.getPrice() + " - "

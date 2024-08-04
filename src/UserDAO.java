@@ -1,6 +1,7 @@
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
+import org.mindrot.jbcrypt.BCrypt;
 
 public class UserDAO {
     private Connection connection;
@@ -9,49 +10,80 @@ public class UserDAO {
         try {
             this.connection = DBConnection.getConnection();
         } catch (SQLException e) {
+            System.err.println("Error establishing database connection: " + e.getMessage());
             e.printStackTrace();
         }
     }
 
-    public boolean registerUser(User user) {
+    public boolean save(User user) {
         String query = "INSERT INTO Users (username, password, email, role) VALUES (?, ?, ?, ?)";
         try (PreparedStatement stmt = connection.prepareStatement(query)) {
             stmt.setString(1, user.getUsername());
-            stmt.setString(2, user.getPassword());
+            stmt.setString(2, user.getPassword()); // Ensure the password is hashed before saving
             stmt.setString(3, user.getEmail());
             stmt.setString(4, user.getRole());
             stmt.executeUpdate();
             return true;
         } catch (SQLException e) {
+            System.err.println("Error during user save: " + e.getMessage());
             e.printStackTrace();
             return false;
         }
     }
 
+    public boolean registerUser(User user) {
+        return save(user); // Don't hash the password here; it should be done in UserService
+    }
+
     public User loginUser(String username, String password) {
-        String query = "SELECT * FROM Users WHERE username = ? AND password = ?";
+        User user = getUserByUsername(username);
+        if (user != null) {
+            System.out.println("User found: " + user.getUsername());
+
+            String trimmedPassword = password.trim();
+            boolean passwordMatch = BCrypt.checkpw(trimmedPassword, user.getPassword());
+            System.out.println("Password match: " + passwordMatch);
+
+            if (passwordMatch) {
+                switch (user.getRole()) {
+                    case "buyer":
+                        return new Buyer(user.getId(), user.getUsername(), user.getPassword(), user.getEmail(),
+                                user.getRole());
+                    case "seller":
+                        return new Seller(user.getId(), user.getUsername(), user.getPassword(), user.getEmail(),
+                                user.getRole());
+                    case "admin":
+                        return new Admin(user.getId(), user.getUsername(), user.getPassword(), user.getEmail(),
+                                user.getRole());
+                    default:
+                        return user;
+                }
+            } else {
+                System.out.println("Login failed. Please check your username and/or password.");
+            }
+        } else {
+            System.out.println("User not found");
+        }
+        return null;
+    }
+
+    public User getUserByUsername(String username) {
+        String query = "SELECT * FROM Users WHERE username = ?";
         try (PreparedStatement stmt = connection.prepareStatement(query)) {
             stmt.setString(1, username);
-            stmt.setString(2, password);
             ResultSet rs = stmt.executeQuery();
             if (rs.next()) {
-                int id = rs.getInt("id");
-                String email = rs.getString("email");
-                String role = rs.getString("role");
-
-                // Create the correct type of User based on the role
-                switch (role) {
-                    case "buyer":
-                        return new Buyer(id, username, password, email, role);
-                    case "seller":
-                        return new Seller(id, username, password, email, role);
-                    case "admin":
-                        return new Admin(id, username, password, email, role);
-                    default:
-                        return new User(id, username, password, email, role);
-                }
+                return new User(
+                        rs.getInt("id"),
+                        rs.getString("username"),
+                        rs.getString("password"),
+                        rs.getString("email"),
+                        rs.getString("role"));
+            } else {
+                System.err.println("User not found: " + username);
             }
         } catch (SQLException e) {
+            System.err.println("Error during user retrieval: " + e.getMessage());
             e.printStackTrace();
         }
         return null;
@@ -71,18 +103,30 @@ public class UserDAO {
                         rs.getString("role")));
             }
         } catch (SQLException e) {
+            System.err.println("Error fetching all users: " + e.getMessage());
             e.printStackTrace();
         }
         return users;
     }
 
     public boolean deleteUser(int userId) {
-        String query = "DELETE FROM Users WHERE id = ?";
-        try (PreparedStatement stmt = connection.prepareStatement(query)) {
-            stmt.setInt(1, userId);
-            int affectedRows = stmt.executeUpdate();
-            return affectedRows > 0;
+        try {
+            // First, delete the user's products
+            String deleteProductsQuery = "DELETE FROM products WHERE seller_id = ?";
+            try (PreparedStatement stmt = connection.prepareStatement(deleteProductsQuery)) {
+                stmt.setInt(1, userId);
+                stmt.executeUpdate();
+            }
+
+            // Then, delete the user
+            String deleteUserQuery = "DELETE FROM users WHERE id = ?";
+            try (PreparedStatement stmt = connection.prepareStatement(deleteUserQuery)) {
+                stmt.setInt(1, userId);
+                int affectedRows = stmt.executeUpdate();
+                return affectedRows > 0;
+            }
         } catch (SQLException e) {
+            System.err.println("Error deleting user: " + e.getMessage());
             e.printStackTrace();
             return false;
         }
