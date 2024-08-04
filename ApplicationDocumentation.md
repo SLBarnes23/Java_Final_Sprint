@@ -44,6 +44,7 @@ This application is a user and product management system designed for a marketpl
 The Javadocs provide detailed descriptions of the classes and methods in the project. They are generated from the source code comments using the `javadoc` tool.
 
 ### 2.2. Source Code Directory Structure
+![Directory Structure](img/Source_Code_Directory_Structure.jpg)
 - JAVA_FINAL_SPRINT
 - │
 - ├──.vscode/
@@ -147,9 +148,9 @@ The Javadocs provide detailed descriptions of the classes and methods in the pro
  - Set up a PostgreSQL or compatible database.
 
  ### Setting Up the Database
--Execute the Provided SQL Schema:
-Use a database client or command line tool to execute the SQL commands to create the necessary tables.
-from `schema.sql` see sample sql commands above.
+- Execute the Provided SQL Schema:
+- Use a database client or command line tool to execute the SQL commands to create the necessary tables.
+- From `schema.sql` see sample sql commands above in 2.6.
 
 ## 3.2 Configure Database Connection Settings: 
 - Modify the DBConnection class to include the correct database URL, username, and password.
@@ -160,13 +161,13 @@ from `schema.sql` see sample sql commands above.
 
 ### Compile the Java Files:
 - Run the following command to compile all Java files:
-bash
-`javac src/*.java`
+- bash
+- `javac src/*.java`
 
 ### Run the Main Class:
 - Start the application by running the Main class:
-bash
-`java src.Main`
+- bash
+- `java src.Main`
 
 ## 3.3 Configuration Files
 
@@ -177,9 +178,9 @@ bash
 - Ensure Database Server is Running:
 
 - Verify that the PostgreSQL server or compatible database is running and accessible.
-Use TestDBConnection 
-bash
-`java src.TestDBConnection`
+- Use TestDBConnection 
+- bash
+- `java src.TestDBConnection`
 
 ### Verify Database Schema:
 - Check that the database schema matches the application's requirements and that all necessary tables and relationships are correctly set up.
