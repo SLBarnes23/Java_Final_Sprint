@@ -44,7 +44,7 @@ This application is a user and product management system designed for a marketpl
 The Javadocs provide detailed descriptions of the classes and methods in the project. They are generated from the source code comments using the `javadoc` tool.
 
 ### 2.2. Source Code Directory Structure
-![Directory Structure]
+![Directory Structure](img/Source_Code_Directory_Structure.jpg)
 
 ### 2.3. Build Process
 
