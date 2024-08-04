@@ -117,11 +117,13 @@ The Javadocs provide detailed descriptions of the classes and methods in the pro
 
 ### Compile the Java Files:
 - Run the following command to compile all Java files:
+
 - bash
 - `javac src/*.java`
 
 ### Run the Main Class:
 - Start the application by running the Main class:
+
 - bash
 - `java src.Main`
 
@@ -135,6 +137,7 @@ The Javadocs provide detailed descriptions of the classes and methods in the pro
 
 - Verify that the PostgreSQL server or compatible database is running and accessible.
 - Use TestDBConnection 
+
 - bash
 - `java src.TestDBConnection`
 
