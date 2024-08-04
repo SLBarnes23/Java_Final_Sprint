@@ -147,27 +147,10 @@ The Javadocs provide detailed descriptions of the classes and methods in the pro
  - Set up a PostgreSQL or compatible database.
 
  ### Setting Up the Database
- Execute the Provided SQL Schema:
-
+-Execute the Provided SQL Schema:
 Use a database client or command line tool to execute the SQL commands to create the necessary tables.
- **Example SQL Commands**:
-   ```sql
-   CREATE TABLE users (
-       id SERIAL PRIMARY KEY,
-       username VARCHAR(50) UNIQUE NOT NULL,
-       password TEXT NOT NULL,
-       email VARCHAR(100),
-       role VARCHAR(20) NOT NULL
-   );
+from `schema.sql` see sample sql commands above.
 
-   CREATE TABLE products (
-       id SERIAL PRIMARY KEY,
-       name VARCHAR(100) NOT NULL,
-       price DECIMAL(10, 2) NOT NULL,
-       quantity INT NOT NULL,
-       seller_id INT REFERENCES users(id)
-   );
- 
 ## 3.2 Configure Database Connection Settings: 
 - Modify the DBConnection class to include the correct database URL, username, and password.
 
