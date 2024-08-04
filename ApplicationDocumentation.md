@@ -44,7 +44,7 @@ This application is a user and product management system designed for a marketpl
 The Javadocs provide detailed descriptions of the classes and methods in the project. They are generated from the source code comments using the `javadoc` tool.
 
 ### 2.2. Source Code Directory Structure
-![Directory Structure](img/Source_Code_Directory_Structure.jpg)
+![Directory Structure]
 
 ### 2.3. Build Process
 
@@ -117,11 +117,13 @@ The Javadocs provide detailed descriptions of the classes and methods in the pro
 
 ### Compile the Java Files:
 - Run the following command to compile all Java files:
+
 - bash
 - `javac src/*.java`
 
 ### Run the Main Class:
 - Start the application by running the Main class:
+
 - bash
 - `java src.Main`
 
@@ -135,6 +137,7 @@ The Javadocs provide detailed descriptions of the classes and methods in the pro
 
 - Verify that the PostgreSQL server or compatible database is running and accessible.
 - Use TestDBConnection 
+
 - bash
 - `java src.TestDBConnection`
 
