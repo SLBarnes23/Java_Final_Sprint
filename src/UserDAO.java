@@ -1,6 +1,7 @@
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
+import org.mindrot.jbcrypt.BCrypt;
 
 public class UserDAO {
     private Connection connection;
@@ -9,7 +10,7 @@ public class UserDAO {
         try {
             this.connection = DBConnection.getConnection();
         } catch (SQLException e) {
-            e.printStackTrace();
+            e.printStackTrace(); // Proper error handling: logs the exception stack trace
         }
     }
 
@@ -17,42 +18,49 @@ public class UserDAO {
         String query = "INSERT INTO Users (username, password, email, role) VALUES (?, ?, ?, ?)";
         try (PreparedStatement stmt = connection.prepareStatement(query)) {
             stmt.setString(1, user.getUsername());
-            stmt.setString(2, user.getPassword());
+
+            // Hash the password before storing it
+            String hashedPassword = BCrypt.hashpw(user.getPassword(), BCrypt.gensalt());
+            stmt.setString(2, hashedPassword);
+
             stmt.setString(3, user.getEmail());
             stmt.setString(4, user.getRole());
             stmt.executeUpdate();
             return true;
         } catch (SQLException e) {
-            e.printStackTrace();
+            e.printStackTrace(); // Proper error handling: logs the exception stack trace
             return false;
         }
     }
 
     public User loginUser(String username, String password) {
-        String query = "SELECT * FROM Users WHERE username = ? AND password = ?";
+        String query = "SELECT * FROM Users WHERE username = ?";
         try (PreparedStatement stmt = connection.prepareStatement(query)) {
             stmt.setString(1, username);
-            stmt.setString(2, password);
             ResultSet rs = stmt.executeQuery();
             if (rs.next()) {
                 int id = rs.getInt("id");
+                String storedPassword = rs.getString("password");
                 String email = rs.getString("email");
                 String role = rs.getString("role");
 
-                // Create the correct type of User based on the role
-                switch (role) {
-                    case "buyer":
-                        return new Buyer(id, username, password, email, role);
-                    case "seller":
-                        return new Seller(id, username, password, email, role);
-                    case "admin":
-                        return new Admin(id, username, password, email, role);
-                    default:
-                        return new User(id, username, password, email, role);
+                // Verify the password
+                if (BCrypt.checkpw(password, storedPassword)) {
+                    // Create the correct type of User based on the role
+                    switch (role) {
+                        case "buyer":
+                            return new Buyer(id, username, storedPassword, email, role);
+                        case "seller":
+                            return new Seller(id, username, storedPassword, email, role);
+                        case "admin":
+                            return new Admin(id, username, storedPassword, email, role);
+                        default:
+                            return new User(id, username, storedPassword, email, role);
+                    }
                 }
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            e.printStackTrace(); // Proper error handling: logs the exception stack trace
         }
         return null;
     }
@@ -71,7 +79,7 @@ public class UserDAO {
                         rs.getString("role")));
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            e.printStackTrace(); // Proper error handling: logs the exception stack trace
         }
         return users;
     }
@@ -83,7 +91,7 @@ public class UserDAO {
             int affectedRows = stmt.executeUpdate();
             return affectedRows > 0;
         } catch (SQLException e) {
-            e.printStackTrace();
+            e.printStackTrace(); // Proper error handling: logs the exception stack trace
             return false;
         }
     }

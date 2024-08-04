@@ -32,20 +32,26 @@ public class Main {
     }
 
     private static void register(Scanner scanner) {
-        System.out.print("Enter username: ");
-        String username = scanner.nextLine();
-        System.out.print("Enter password: ");
-        String password = scanner.nextLine();
-        System.out.print("Enter email: ");
-        String email = scanner.nextLine();
-        System.out.print("Enter role (buyer/seller/admin): ");
-        String role = scanner.nextLine();
+        try {
+            System.out.print("Enter username: ");
+            String username = scanner.nextLine();
+            System.out.print("Enter password: ");
+            String password = scanner.nextLine();
+            System.out.print("Enter email: ");
+            String email = scanner.nextLine();
+            System.out.print("Enter role (buyer/seller/admin): ");
+            String role = scanner.nextLine();
 
-        User user = new User(0, username, password, email, role);
-        if (userService.registerUser(user)) {
-            System.out.println("Registration successful!");
-        } else {
-            System.out.println("Registration failed.");
+            // Use the static factory method to create a user with a hashed password
+            User user = User.createUser(0, username, password, email, role);
+            if (userService.registerUser(user)) {
+                System.out.println("Registration successful!");
+            } else {
+                System.out.println("Registration failed.");
+            }
+        } catch (Exception e) {
+            System.err.println("Error during registration: " + e.getMessage());
+            e.printStackTrace();
         }
     }
 
