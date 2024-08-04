@@ -44,50 +44,50 @@ This application is a user and product management system designed for a marketpl
 The Javadocs provide detailed descriptions of the classes and methods in the project. They are generated from the source code comments using the `javadoc` tool.
 
 ### 2.2. Source Code Directory Structure
-JAVA_FINAL_SPRINT
-│
-├──.vscode/
-    │
-    ├── Main.java
-├──lib/
-    │
-    ├── jBCrypt-0.4.jar
-    ├── postgressql.42.7.3.jar
-│
-├──src/   
-    │
-    ├── Main.java
-    ├── Admin.java
-    ├── Buyer.java
-    ├── Seller.java
-    ├── User.java
-    ├── UserService.java
-    ├── UserDAO.java
-    ├── Product.java
-    ├── ProductService.java
-    ├── ProductDAO.java
-    ├── DBConnection.java
-    ├── TestDBConnection.java
-│
-├──bin/ 
-    │
-    ├── Main.class
-    ├── Admin.class
-    ├── Buyer.class
-    ├── Seller.class
-    ├── User.class
-    ├── UserService.class
-    ├── UserDOA.class
-    ├── Product.class
-    ├── ProductService.class
-    ├── ProductDOA.class
-    ├── DBConnection.class
-    ├── TestDBConnection.class
-│
-├──ApplicationDocumentation.md
-├──LICENSE
-├──README.md
-├──schema.sql
+- JAVA_FINAL_SPRINT
+- │
+- ├──.vscode/
+-     │
+-     ├── Main.java
+- ├──lib/
+-     │
+-     ├── jBCrypt-0.4.jar
+-     ├── postgressql.42.7.3.jar
+- │
+- ├──src/   
+-     │
+-     ├── Main.java
+-     ├── Admin.java
+-     ├── Buyer.java
+-     ├── Seller.java
+-     ├── User.java
+-     ├── UserService.java
+-     ├── UserDAO.java
+-     ├── Product.java
+-     ├── ProductService.java
+-     ├── ProductDAO.java
+-     ├── DBConnection.java
+-     ├── TestDBConnection.java
+- │
+- ├──bin/ 
+-     │
+-     ├── Main.class
+-     ├── Admin.class
+-     ├── Buyer.class
+-     ├── Seller.class
+-     ├── User.class
+-     ├── UserService.class
+-     ├── UserDOA.class
+-     ├── Product.class
+-     ├── ProductService.class
+-     ├── ProductDOA.class
+-     ├── DBConnection.class
+-     ├── TestDBConnection.class
+- │
+- ├──ApplicationDocumentation.md
+- ├──LICENSE
+- ├──README.md
+- ├──schema.sql
 
 ### 2.3. Build Process
 
@@ -134,10 +134,10 @@ JAVA_FINAL_SPRINT
 
 ## 2.7. Getting the Source Code
 
-- **Repository URL**: [GitHub Repository URL](https://github.com/username/repository)
+- **Repository URL**: [GitHub Repository URL](https://github.com/SLBarnes23/Java_Final_Sprint)
 - **Clone the Repository**:
   ```bash
-  git clone https://github.com/username/repository.git
+  git clone https://github.com/SLBarnes23/Java_Final_Sprint
 
 # 3. Deployment Documentation
 
@@ -167,25 +167,25 @@ Use a database client or command line tool to execute the SQL commands to create
        quantity INT NOT NULL,
        seller_id INT REFERENCES users(id)
    );
-### Configure Database Connection Settings:
+ 
+## 3.2 Configure Database Connection Settings: 
 - Modify the DBConnection class to include the correct database URL, username, and password.
+
 ### Running the Application
 - Navigate to the Project Directory:
 - Use a terminal or command prompt to change to the project directory where the source files are located.
 
 ### Compile the Java Files:
-
 - Run the following command to compile all Java files:
 bash
 `javac src/*.java`
 
 ### Run the Main Class:
-
 - Start the application by running the Main class:
 bash
 `java src.Main`
 
-## Configuration Files
+## 3.3 Configuration Files
 
 ### DBConnection Class:
 - Ensure that the DBConnection class is configured with the correct database URL, username, and password.
