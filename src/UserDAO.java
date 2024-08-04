@@ -39,11 +39,9 @@ public class UserDAO {
         User user = getUserByUsername(username);
         if (user != null) {
             System.out.println("User found: " + user.getUsername());
-            System.out.println("Stored password hash: " + user.getPassword());
 
             String trimmedPassword = password.trim();
             boolean passwordMatch = BCrypt.checkpw(trimmedPassword, user.getPassword());
-            System.out.println("Entered password (trimmed): " + trimmedPassword);
             System.out.println("Password match: " + passwordMatch);
 
             if (passwordMatch) {
