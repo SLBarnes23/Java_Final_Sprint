@@ -101,4 +101,26 @@ public class ProductDAO {
         }
         return products;
     }
+
+    // New method for searching products by name
+    public List<Product> searchProductsByName(String name) {
+        List<Product> products = new ArrayList<>();
+        String query = "SELECT * FROM Products WHERE name ILIKE ?"; // Using ILIKE for case-insensitive search
+        try (PreparedStatement stmt = connection.prepareStatement(query)) {
+            stmt.setString(1, "%" + name + "%");
+            ResultSet rs = stmt.executeQuery();
+            while (rs.next()) {
+                products.add(new Product(
+                        rs.getInt("id"),
+                        rs.getString("name"),
+                        rs.getDouble("price"),
+                        rs.getInt("quantity"),
+                        rs.getInt("seller_id")));
+            }
+        } catch (SQLException e) {
+            System.err.println("Error searching for products: " + e.getMessage());
+            e.printStackTrace(); // Proper error handling: logs the exception stack trace
+        }
+        return products;
+    }
 }
