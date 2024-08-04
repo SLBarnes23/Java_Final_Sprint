@@ -34,8 +34,8 @@ This application is a user and product management system designed for a marketpl
    - The application runs in a console environment. Follow the on-screen prompts to register, login, and perform various operations.
 
 ### 1.4. Class Diagram
+![Class Diagram](img/Class_Relationships.png)
 
-![Class Diagram](path/to/class_diagram.png) *(Replace with the actual path to your class diagram image)*
 
 ## 2. Development Documentation
 
@@ -45,50 +45,6 @@ The Javadocs provide detailed descriptions of the classes and methods in the pro
 
 ### 2.2. Source Code Directory Structure
 ![Directory Structure](img/Source_Code_Directory_Structure.jpg)
-- JAVA_FINAL_SPRINT
-- │
-- ├──.vscode/
--     │
--     ├── Main.java
-- ├──lib/
--     │
--     ├── jBCrypt-0.4.jar
--     ├── postgressql.42.7.3.jar
-- │
-- ├──src/   
--     │
--     ├── Main.java
--     ├── Admin.java
--     ├── Buyer.java
--     ├── Seller.java
--     ├── User.java
--     ├── UserService.java
--     ├── UserDAO.java
--     ├── Product.java
--     ├── ProductService.java
--     ├── ProductDAO.java
--     ├── DBConnection.java
--     ├── TestDBConnection.java
-- │
-- ├──bin/ 
--     │
--     ├── Main.class
--     ├── Admin.class
--     ├── Buyer.class
--     ├── Seller.class
--     ├── User.class
--     ├── UserService.class
--     ├── UserDOA.class
--     ├── Product.class
--     ├── ProductService.class
--     ├── ProductDOA.class
--     ├── DBConnection.class
--     ├── TestDBConnection.class
-- │
-- ├──ApplicationDocumentation.md
-- ├──LICENSE
-- ├──README.md
-- ├──schema.sql
 
 ### 2.3. Build Process
 
