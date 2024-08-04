@@ -26,4 +26,9 @@ public class ProductService {
     public List<Product> getAllProducts() {
         return productDAO.getAllProducts();
     }
+
+    // New method to search products by name
+    public List<Product> searchProductsByName(String name) {
+        return productDAO.searchProductsByName(name);
+    }
 }

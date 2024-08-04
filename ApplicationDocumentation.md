@@ -34,8 +34,8 @@ This application is a user and product management system designed for a marketpl
    - The application runs in a console environment. Follow the on-screen prompts to register, login, and perform various operations.
 
 ### 1.4. Class Diagram
-
 ![Class Diagram](img/Class_Relationships.png)
+
 
 ## 2. Development Documentation
 

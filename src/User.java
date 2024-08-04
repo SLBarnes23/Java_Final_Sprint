@@ -1,3 +1,5 @@
+import org.mindrot.jbcrypt.BCrypt;
+
 public class User {
     private int id;
     private String username;
@@ -5,13 +7,19 @@ public class User {
     private String email;
     private String role;
 
-    // Constructor
+    // Public constructor
     public User(int id, String username, String password, String email, String role) {
         this.id = id;
         this.username = username;
         this.password = password;
         this.email = email;
         this.role = role;
+    }
+
+    // Static factory method for creating a new user with a hashed password
+    public static User createUser(int id, String username, String password, String email, String role) {
+        String hashedPassword = BCrypt.hashpw(password, BCrypt.gensalt());
+        return new User(id, username, hashedPassword, email, role);
     }
 
     // Getters and setters

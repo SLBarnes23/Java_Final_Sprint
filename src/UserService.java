@@ -8,11 +8,12 @@ public class UserService {
     }
 
     public boolean registerUser(User user) {
-        return userDAO.registerUser(user);
+        // Directly save the user, password is already hashed
+        return userDAO.save(user);
     }
 
     public User loginUser(String username, String password) {
-        return userDAO.loginUser(username, password);
+        return userDAO.loginUser(username, password); // Delegate to DAO
     }
 
     public List<User> getAllUsers() {
