@@ -6,6 +6,7 @@ import org.mindrot.jbcrypt.BCrypt;
 public class UserDAO {
     private Connection connection;
 
+    // Constructor to initialize the database connection
     public UserDAO() {
         try {
             this.connection = DBConnection.getConnection();
@@ -15,6 +16,7 @@ public class UserDAO {
         }
     }
 
+    // Method to save a new user to the database
     public boolean save(User user) {
         String query = "INSERT INTO Users (username, password, email, role) VALUES (?, ?, ?, ?)";
         try (PreparedStatement stmt = connection.prepareStatement(query)) {
@@ -31,20 +33,24 @@ public class UserDAO {
         }
     }
 
+    // Method to register a user, essentially an alias for the save method
     public boolean registerUser(User user) {
         return save(user); // Don't hash the password here; it should be done in UserService
     }
 
+    // Method to log in a user by checking username and password
     public User loginUser(String username, String password) {
         User user = getUserByUsername(username);
         if (user != null) {
             System.out.println("User found: " + user.getUsername());
 
+            // Trim the password and check if it matches the stored hashed password
             String trimmedPassword = password.trim();
             boolean passwordMatch = BCrypt.checkpw(trimmedPassword, user.getPassword());
             System.out.println("Password match: " + passwordMatch);
 
             if (passwordMatch) {
+                // Return different user types based on the role
                 switch (user.getRole()) {
                     case "buyer":
                         return new Buyer(user.getId(), user.getUsername(), user.getPassword(), user.getEmail(),
@@ -67,6 +73,7 @@ public class UserDAO {
         return null;
     }
 
+    // Method to get a user by username
     public User getUserByUsername(String username) {
         String query = "SELECT * FROM Users WHERE username = ?";
         try (PreparedStatement stmt = connection.prepareStatement(query)) {
@@ -89,6 +96,7 @@ public class UserDAO {
         return null;
     }
 
+    // Method to get all users from the database
     public List<User> getAllUsers() {
         List<User> users = new ArrayList<>();
         String query = "SELECT * FROM Users";
@@ -109,6 +117,7 @@ public class UserDAO {
         return users;
     }
 
+    // Method to delete a user and their products
     public boolean deleteUser(int userId) {
         try {
             // First, delete the user's products
