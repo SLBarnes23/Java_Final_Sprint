@@ -2,12 +2,16 @@ import java.util.Scanner;
 import java.util.List;
 
 public class Main {
+    // Initialize services for user and product operations
     private static UserService userService = new UserService();
     private static ProductService productService = new ProductService();
 
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
+
+        // Main loop to display the main menu and handle user input
         while (true) {
+            // Display menu options
             System.out.println("1. Register");
             System.out.println("2. Login");
             System.out.println("3. Exit");
@@ -15,15 +19,16 @@ public class Main {
             int choice = scanner.nextInt();
             scanner.nextLine(); // Consume newline
 
+            // Handle user choice
             switch (choice) {
                 case 1:
-                    register(scanner);
+                    register(scanner); // Handle user registration
                     break;
                 case 2:
-                    login(scanner);
+                    login(scanner); // Handle user login
                     break;
                 case 3:
-                    System.exit(0);
+                    System.exit(0); // Exit the application
                     break;
                 default:
                     System.out.println("Invalid choice. Please try again.");
@@ -31,8 +36,10 @@ public class Main {
         }
     }
 
+    // Method to handle user registration
     private static void register(Scanner scanner) {
         try {
+            // Prompt for user details
             System.out.print("Enter username: ");
             String username = scanner.nextLine();
             System.out.print("Enter password: ");
@@ -42,6 +49,7 @@ public class Main {
             System.out.print("Enter role (buyer/seller/admin): ");
             String roleInput = scanner.nextLine().trim().toLowerCase();
 
+            // Validate user role
             String role;
             switch (roleInput) {
                 case "buyer":
@@ -54,7 +62,7 @@ public class Main {
                     return;
             }
 
-            // Use the static factory method to create a user with a hashed password
+            // Create a user with hashed password using a factory method
             User user = User.createUser(0, username, password, email, role);
             if (userService.registerUser(user)) {
                 System.out.println("Registration successful!");
@@ -62,26 +70,31 @@ public class Main {
                 System.out.println("Registration failed.");
             }
         } catch (Exception e) {
+            // Handle registration errors
             System.err.println("Error during registration: " + e.getMessage());
             e.printStackTrace();
         }
     }
 
+    // Method to handle user login
     private static void login(Scanner scanner) {
+        // Prompt for login details
         System.out.print("Enter username: ");
         String username = scanner.nextLine();
         System.out.print("Enter password: ");
         String password = scanner.nextLine();
 
+        // Attempt to log in and retrieve user
         User user = userService.loginUser(username, password);
         if (user != null) {
             System.out.println("Login successful! Welcome, " + user.getUsername());
-            navigateRoleMenu(scanner, user);
+            navigateRoleMenu(scanner, user); // Navigate to role-specific menu
         } else {
             System.out.println("Login failed. Please check your username and/or password.");
         }
     }
 
+    // Method to navigate to role-specific menu based on user's role
     private static void navigateRoleMenu(Scanner scanner, User user) {
         switch (user.getRole()) {
             case "buyer":
@@ -110,8 +123,10 @@ public class Main {
         }
     }
 
+    // Method to display the menu and handle buyer-specific operations
     private static void showBuyerMenu(Scanner scanner, Buyer buyer) {
         while (true) {
+            // Display buyer menu options
             System.out.println("Buyer menu:");
             System.out.println("1. View All Products");
             System.out.println("2. Search Products by Name");
@@ -120,12 +135,13 @@ public class Main {
             int choice = scanner.nextInt();
             scanner.nextLine(); // Consume newline
 
+            // Handle buyer menu choices
             switch (choice) {
                 case 1:
-                    viewProducts();
+                    viewProducts(); // View all products
                     break;
                 case 2:
-                    searchProductsByName(scanner);
+                    searchProductsByName(scanner); // Search products by name
                     break;
                 case 3:
                     return; // Logout and return to main menu
@@ -135,8 +151,10 @@ public class Main {
         }
     }
 
+    // Method to display the menu and handle seller-specific operations
     private static void showSellerMenu(Scanner scanner, Seller seller) {
         while (true) {
+            // Display seller menu options
             System.out.println("Seller menu:");
             System.out.println("1. Add Product");
             System.out.println("2. Update Product");
@@ -147,18 +165,19 @@ public class Main {
             int choice = scanner.nextInt();
             scanner.nextLine(); // Consume newline
 
+            // Handle seller menu choices
             switch (choice) {
                 case 1:
-                    addProduct(scanner, seller);
+                    addProduct(scanner, seller); // Add a new product
                     break;
                 case 2:
-                    updateProduct(scanner, seller);
+                    updateProduct(scanner, seller); // Update an existing product
                     break;
                 case 3:
-                    deleteProduct(scanner, seller);
+                    deleteProduct(scanner, seller); // Delete a product
                     break;
                 case 4:
-                    viewMyProducts(seller);
+                    viewMyProducts(seller); // View products added by the seller
                     break;
                 case 5:
                     return; // Logout and return to main menu
@@ -168,7 +187,9 @@ public class Main {
         }
     }
 
+    // Method to add a new product
     private static void addProduct(Scanner scanner, Seller seller) {
+        // Prompt for product details
         System.out.print("Enter product name: ");
         String name = scanner.nextLine();
         System.out.print("Enter product price: ");
@@ -177,6 +198,7 @@ public class Main {
         int quantity = scanner.nextInt();
         scanner.nextLine(); // Consume newline
 
+        // Create and add a new product
         Product product = new Product(0, name, price, quantity, seller.getId());
         if (productService.addProduct(product)) {
             System.out.println("Product added successfully!");
@@ -185,7 +207,9 @@ public class Main {
         }
     }
 
+    // Method to update an existing product
     private static void updateProduct(Scanner scanner, Seller seller) {
+        // Prompt for product details
         System.out.print("Enter product ID to update: ");
         int productId = scanner.nextInt();
         scanner.nextLine(); // Consume newline
@@ -197,6 +221,7 @@ public class Main {
         int quantity = scanner.nextInt();
         scanner.nextLine(); // Consume newline
 
+        // Create and update the product
         Product product = new Product(productId, name, price, quantity, seller.getId());
         if (productService.updateProduct(product)) {
             System.out.println("Product updated successfully!");
@@ -205,11 +230,13 @@ public class Main {
         }
     }
 
+    // Method to delete a product
     private static void deleteProduct(Scanner scanner, Seller seller) {
         System.out.print("Enter product ID to delete: ");
         int productId = scanner.nextInt();
         scanner.nextLine(); // Consume newline
 
+        // Attempt to delete the product
         if (productService.deleteProduct(productId, seller.getId())) {
             System.out.println("Product deleted successfully!");
         } else {
@@ -217,6 +244,7 @@ public class Main {
         }
     }
 
+    // Method to view products added by the seller
     private static void viewMyProducts(Seller seller) {
         List<Product> products = productService.getProductsBySeller(seller.getId());
         if (products.isEmpty()) {
@@ -229,8 +257,10 @@ public class Main {
         }
     }
 
+    // Method to display the menu and handle admin-specific operations
     private static void showAdminMenu(Scanner scanner, Admin admin) {
         while (true) {
+            // Display admin menu options
             System.out.println("Admin menu:");
             System.out.println("1. View All Users");
             System.out.println("2. Delete User");
@@ -240,15 +270,16 @@ public class Main {
             int choice = scanner.nextInt();
             scanner.nextLine(); // Consume newline
 
+            // Handle admin menu choices
             switch (choice) {
                 case 1:
-                    viewAllUsers();
+                    viewAllUsers(); // View all registered users
                     break;
                 case 2:
-                    deleteUser(scanner);
+                    deleteUser(scanner); // Delete a user
                     break;
                 case 3:
-                    viewAllProducts();
+                    viewAllProducts(); // View all products
                     break;
                 case 4:
                     return; // Logout and return to main menu
@@ -258,6 +289,7 @@ public class Main {
         }
     }
 
+    // Method to view all registered users
     private static void viewAllUsers() {
         List<User> users = userService.getAllUsers();
         if (users.isEmpty()) {
@@ -270,11 +302,13 @@ public class Main {
         }
     }
 
+    // Method to delete a user
     private static void deleteUser(Scanner scanner) {
         System.out.print("Enter user ID to delete: ");
         int userId = scanner.nextInt();
         scanner.nextLine(); // Consume newline
 
+        // Attempt to delete the user
         if (userService.deleteUser(userId)) {
             System.out.println("User deleted successfully!");
         } else {
@@ -282,6 +316,7 @@ public class Main {
         }
     }
 
+    // Method to view all products
     private static void viewAllProducts() {
         List<Product> products = productService.getAllProducts();
         if (products.isEmpty()) {
@@ -294,6 +329,7 @@ public class Main {
         }
     }
 
+    // Method to view all products (for buyers)
     private static void viewProducts() {
         // Implement buyer-specific view products functionality
         List<Product> products = productService.getAllProducts(); // Assuming buyers can view all products
@@ -307,6 +343,7 @@ public class Main {
         }
     }
 
+    // Method to search products by name
     private static void searchProductsByName(Scanner scanner) {
         System.out.print("Enter product name to search: ");
         String name = scanner.nextLine();
