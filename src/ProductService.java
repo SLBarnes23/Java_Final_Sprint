@@ -33,6 +33,11 @@ public class ProductService {
         return productDAO.getAllProducts(); // Call DAO method and return the list of all products
     }
 
+    // New method to get seller's username
+    public String getSellerUsername(int sellerId) {
+        return productDAO.getSellerUsername(sellerId);
+    }
+
     // New method to search for products by name by delegating to ProductDAO
     public List<Product> searchProductsByName(String name) {
         return productDAO.searchProductsByName(name); // Call DAO method and return the list of matching products

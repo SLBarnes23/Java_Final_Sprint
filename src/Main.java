@@ -409,8 +409,14 @@ public class Main {
             System.out.println("=============== View All Products: ==============");
             System.out.println("");
             for (Product product : products) {
+                // Get the seller's username instead of the seller ID
+                String sellerUsername = productService.getSellerUsername(product.getSellerId());
+                if (sellerUsername == null) {
+                    sellerUsername = "Unknown Seller";
+                }
+                // Display product information along with seller's username
                 System.out.println(product.getId() + ": " + product.getName() + " - $" + product.getPrice() + " - "
-                        + product.getQuantity() + " units - Seller ID: " + product.getSellerId());
+                        + product.getQuantity() + " units - Seller: " + sellerUsername);
             }
         }
     }
