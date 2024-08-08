@@ -107,11 +107,9 @@ public class Main {
         User user = userService.loginUser(username, password);
         if (user != null) {
             System.out.println("Login successful! Welcome, " + user.getUsername());
-            System.out.println("");
             navigateRoleMenu(scanner, user); // Navigate to role-specific menu
         } else {
             System.out.println("Login failed. Please check your username and/or password.");
-            System.out.println("");
         }
     }
 
