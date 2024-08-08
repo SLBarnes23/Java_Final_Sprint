@@ -127,6 +127,22 @@ public class ProductDAO {
         return products; // Return the list of products
     }
 
+    // New method to get the seller's username by their ID
+    public String getSellerUsername(int sellerId) {
+        String query = "SELECT username FROM Users WHERE id = ?";
+        try (PreparedStatement stmt = connection.prepareStatement(query)) {
+            stmt.setInt(1, sellerId);
+            ResultSet rs = stmt.executeQuery();
+            if (rs.next()) {
+                return rs.getString("username");
+            }
+        } catch (SQLException e) {
+            System.err.println("Error fetching seller username: " + e.getMessage());
+            e.printStackTrace(); // Print the stack trace for debugging
+        }
+        return null; // Return null if the username is not found
+    }
+
     // Method to search for products by name (case-insensitive)
     public List<Product> searchProductsByName(String name) {
         List<Product> products = new ArrayList<>();
