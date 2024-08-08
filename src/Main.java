@@ -12,9 +12,15 @@ public class Main {
         // Main loop to display the main menu and handle user input
         while (true) {
             // Display menu options
+            System.out.println("");
+            System.out.println("===== Welcome to the E-Commerce Application =====");
+            System.out.println("");
             System.out.println("1. Register");
             System.out.println("2. Login");
             System.out.println("3. Exit");
+            System.out.println("");
+            System.out.println("=================================================");
+            System.out.println("");
             System.out.print("Choose an option: ");
             int choice = scanner.nextInt();
             scanner.nextLine(); // Consume newline
@@ -40,6 +46,9 @@ public class Main {
     private static void register(Scanner scanner) {
         try {
             // Prompt for user details
+            System.out.println("");
+            System.out.println("================= Register User =================");
+            System.out.println("");
             System.out.print("Enter username: ");
             String username = scanner.nextLine();
             System.out.print("Enter password: ");
@@ -48,7 +57,9 @@ public class Main {
             String email = scanner.nextLine();
             System.out.print("Enter role (buyer/seller/admin): ");
             String roleInput = scanner.nextLine().trim().toLowerCase();
-
+            System.out.println("");
+            System.out.println("=================================================");
+            System.out.println("");
             // Validate user role
             String role;
             switch (roleInput) {
@@ -59,6 +70,7 @@ public class Main {
                     break;
                 default:
                     System.out.println("Invalid role. Please enter 'buyer', 'seller', or 'admin'.");
+                    System.out.println("");
                     return;
             }
 
@@ -66,8 +78,10 @@ public class Main {
             User user = User.createUser(0, username, password, email, role);
             if (userService.registerUser(user)) {
                 System.out.println("Registration successful!");
+                System.out.println("");
             } else {
                 System.out.println("Registration failed.");
+                System.out.println("");
             }
         } catch (Exception e) {
             // Handle registration errors
@@ -79,18 +93,25 @@ public class Main {
     // Method to handle user login
     private static void login(Scanner scanner) {
         // Prompt for login details
+        System.out.println("");
+        System.out.println("================== User Login ===================");
+        System.out.println("");
         System.out.print("Enter username: ");
         String username = scanner.nextLine();
         System.out.print("Enter password: ");
         String password = scanner.nextLine();
-
+        System.out.println("");
+        System.out.println("=================================================");
+        System.out.println("");
         // Attempt to log in and retrieve user
         User user = userService.loginUser(username, password);
         if (user != null) {
             System.out.println("Login successful! Welcome, " + user.getUsername());
+            System.out.println("");
             navigateRoleMenu(scanner, user); // Navigate to role-specific menu
         } else {
             System.out.println("Login failed. Please check your username and/or password.");
+            System.out.println("");
         }
     }
 
@@ -127,10 +148,15 @@ public class Main {
     private static void showBuyerMenu(Scanner scanner, Buyer buyer) {
         while (true) {
             // Display buyer menu options
-            System.out.println("Buyer menu:");
+            System.out.println("");
+            System.out.println("=================== Buyer Menu: =================");
+            System.out.println("");
             System.out.println("1. View All Products");
             System.out.println("2. Search Products by Name");
             System.out.println("3. Logout");
+            System.out.println("");
+            System.out.println("=================================================");
+            System.out.println("");
             System.out.print("Choose an option: ");
             int choice = scanner.nextInt();
             scanner.nextLine(); // Consume newline
@@ -138,15 +164,23 @@ public class Main {
             // Handle buyer menu choices
             switch (choice) {
                 case 1:
+                    System.out.println("");
+                    System.out.println("================== All Products: ================");
+                    System.out.println("");
                     viewProducts(); // View all products
                     break;
                 case 2:
+                    System.out.println("");
+                    System.out.println("================ Product Search: ================");
+                    System.out.println("");
                     searchProductsByName(scanner); // Search products by name
+                    System.out.println("");
                     break;
                 case 3:
                     return; // Logout and return to main menu
                 default:
                     System.out.println("Invalid choice. Please try again.");
+                    System.out.println("");
             }
         }
     }
@@ -155,12 +189,17 @@ public class Main {
     private static void showSellerMenu(Scanner scanner, Seller seller) {
         while (true) {
             // Display seller menu options
-            System.out.println("Seller menu:");
+            System.out.println("");
+            System.out.println("================== Seller Menu: =================");
+            System.out.println("");
             System.out.println("1. Add Product");
             System.out.println("2. Update Product");
             System.out.println("3. Delete Product");
             System.out.println("4. View My Products");
             System.out.println("5. Logout");
+            System.out.println("");
+            System.out.println("=================================================");
+            System.out.println("");
             System.out.print("Choose an option: ");
             int choice = scanner.nextInt();
             scanner.nextLine(); // Consume newline
@@ -190,6 +229,9 @@ public class Main {
     // Method to add a new product
     private static void addProduct(Scanner scanner, Seller seller) {
         // Prompt for product details
+        System.out.println("");
+        System.out.println("================== Add Product: =================");
+        System.out.println("");
         System.out.print("Enter product name: ");
         String name = scanner.nextLine();
         System.out.print("Enter product price: ");
@@ -197,6 +239,9 @@ public class Main {
         System.out.print("Enter product quantity: ");
         int quantity = scanner.nextInt();
         scanner.nextLine(); // Consume newline
+        System.out.println("");
+        System.out.println("=================================================");
+        System.out.println("");
 
         // Create and add a new product
         Product product = new Product(0, name, price, quantity, seller.getId());
@@ -210,6 +255,9 @@ public class Main {
     // Method to update an existing product
     private static void updateProduct(Scanner scanner, Seller seller) {
         // Prompt for product details
+        System.out.println("");
+        System.out.println("================= Update Product: ===============");
+        System.out.println("");
         System.out.print("Enter product ID to update: ");
         int productId = scanner.nextInt();
         scanner.nextLine(); // Consume newline
@@ -220,6 +268,9 @@ public class Main {
         System.out.print("Enter new product quantity: ");
         int quantity = scanner.nextInt();
         scanner.nextLine(); // Consume newline
+        System.out.println("");
+        System.out.println("=================================================");
+        System.out.println("");
 
         // Create and update the product
         Product product = new Product(productId, name, price, quantity, seller.getId());
@@ -232,14 +283,24 @@ public class Main {
 
     // Method to delete a product
     private static void deleteProduct(Scanner scanner, Seller seller) {
+        System.out.println("");
+        System.out.println("================= Delete Product: ===============");
+        System.out.println("");
         System.out.print("Enter product ID to delete: ");
         int productId = scanner.nextInt();
         scanner.nextLine(); // Consume newline
 
         // Attempt to delete the product
         if (productService.deleteProduct(productId, seller.getId())) {
+            System.out.println("");
+            System.out.println("=================================================");
+            System.out.println("");
             System.out.println("Product deleted successfully!");
+
         } else {
+            System.out.println("");
+            System.out.println("=================================================");
+            System.out.println("");
             System.out.println("Failed to delete product.");
         }
     }
@@ -248,8 +309,15 @@ public class Main {
     private static void viewMyProducts(Seller seller) {
         List<Product> products = productService.getProductsBySeller(seller.getId());
         if (products.isEmpty()) {
+            System.out.println("");
+            System.out.println("=================================================");
+            System.out.println("");
             System.out.println("No products found.");
+
         } else {
+            System.out.println("");
+            System.out.println("================ View My Products: ==============");
+            System.out.println("");
             for (Product product : products) {
                 System.out.println(product.getId() + ": " + product.getName() + " - $" + product.getPrice() + " - "
                         + product.getQuantity() + " units");
@@ -261,11 +329,16 @@ public class Main {
     private static void showAdminMenu(Scanner scanner, Admin admin) {
         while (true) {
             // Display admin menu options
-            System.out.println("Admin menu:");
+            System.out.println("");
+            System.out.println("================== Admin Menu: ==================");
+            System.out.println("");
             System.out.println("1. View All Users");
             System.out.println("2. Delete User");
             System.out.println("3. View All Products");
             System.out.println("4. Logout");
+            System.out.println("");
+            System.out.println("=================================================");
+            System.out.println("");
             System.out.print("Choose an option: ");
             int choice = scanner.nextInt();
             scanner.nextLine(); // Consume newline
@@ -295,6 +368,9 @@ public class Main {
         if (users.isEmpty()) {
             System.out.println("No users found.");
         } else {
+            System.out.println("");
+            System.out.println("=================== All Users: ==================");
+            System.out.println("");
             for (User user : users) {
                 System.out.println(
                         user.getId() + ": " + user.getUsername() + " - " + user.getEmail() + " - " + user.getRole());
@@ -304,14 +380,23 @@ public class Main {
 
     // Method to delete a user
     private static void deleteUser(Scanner scanner) {
+        System.out.println("");
+        System.out.println("================== Delete User: =================");
+        System.out.println("");
         System.out.print("Enter user ID to delete: ");
         int userId = scanner.nextInt();
         scanner.nextLine(); // Consume newline
 
         // Attempt to delete the user
         if (userService.deleteUser(userId)) {
+            System.out.println("");
+            System.out.println("=================================================");
+            System.out.println("");
             System.out.println("User deleted successfully!");
         } else {
+            System.out.println("");
+            System.out.println("=================================================");
+            System.out.println("");
             System.out.println("Failed to delete user.");
         }
     }
@@ -322,6 +407,9 @@ public class Main {
         if (products.isEmpty()) {
             System.out.println("No products found.");
         } else {
+            System.out.println("");
+            System.out.println("=============== View All Products: ==============");
+            System.out.println("");
             for (Product product : products) {
                 System.out.println(product.getId() + ": " + product.getName() + " - $" + product.getPrice() + " - "
                         + product.getQuantity() + " units - Seller ID: " + product.getSellerId());
@@ -351,6 +439,9 @@ public class Main {
         if (products.isEmpty()) {
             System.out.println("No products found with the name \"" + name + "\".");
         } else {
+            System.out.println("");
+            System.out.println("================ Search Results: ================");
+            System.out.println("");
             for (Product product : products) {
                 System.out.println(product.getId() + ": " + product.getName() + " - $" + product.getPrice() + " - "
                         + product.getQuantity() + " units - Seller ID: " + product.getSellerId());
